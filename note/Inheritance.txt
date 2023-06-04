@@ -1,0 +1,39 @@
+23.06.04
+
+iOS & Swift - The Complete iOS App Development Bootcamp
+- [Swift Deep Dive] Classes and Inheritance
+
+Classes 
+- 청사진을 정의하는 방법
+앱을 실행할때 클래스를 개체로 초기화 시킬 수 있어요 init()
+
+- 이번 시간 -
+클래스로부터 객체를 생성하는 방법에 대한 이야기
+
+상속, 서브 클래스, 슈퍼 클래스
+
+1. SubClass
+2. SuperClass
+3. Override
+4. Super.method()
+
+Code 밑에 콘솔창을 디버그 콘솔이라고 부른다.
+
+* Define the Class
+
+Class MyClass {} 
+-> 클래스 키워드 + 클래스의 이름(대문자로 시작) + {클래스의 구현을 정의}
+
+
+* Initialise the Class 
+MyClass()
+
+
+* Inheritance
+Class MyClass : SuperClass { }
+
+- 슈퍼클래스는 무슨뜻인가 ?
+슈퍼 클래스에서 상속받았다는것은?
+슈퍼클래스를 부모라고 생각해보자 -> 메서드를 갖고 있는
+좀 더 클래스를 강화시키고 싶다면 기존 클래스에 코드를 더 추가해서 할 수 있어요
+하지만 다른 방법도 있어요 SubClass를 생성하고 기능을 추가할 수 있어요.
