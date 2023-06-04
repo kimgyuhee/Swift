@@ -1,0 +1,43 @@
+23.06.04
+
+iOS & Swift - The Complete iOS App Development Bootcamp
+- [Swift Deep Dive] Classes VS Structs
+
+** Structs 는 상속 받을수 없다.
+
+* Define the Structure 
+Struct MyStruct { }
+
+* Initialise the Structure
+MyStruct()
+
+클래스가 구조보다 복잡하게 여겨지고 오류가 발생하기 쉬운거다.
+클래스의 복제는 직관적이지않다.
+
+같은 객체에 대한 두개의 참조 값이다.
+
+let people1 = Enemy(health : 100)
+let people2 = people1
+
+값이 변경되면 모두 변경된다.
+
+스트럭츠는 제대로 복사된다.
+위의 키워드를 class -> struct 변경하면 상속은 불가능하지만
+var people1 = Enemy(health : 100)
+var people2 = people1
+
+1의 값이 수정되면 1의 값만 수정된다.
+수정이 일어나는 메소드에 * matating * 키워드를 붙여줘야한다.
+mutating func takeDamage(amount : Int) {
+	health = health - amount
+}
+
+
+
+====================================================
+스위프트에서 클래스는 참조타입이고 구조체와 열거형은 값 타입입니다
+값 타입인 구조체에서는 인스턴스 메소드 내에서 프로퍼티(속성)들을 수정할 수 없게 되어 있습니다.
+따라서 이러한 속성들을 구조체 안의 메소드에서 수정을 해주디 위해 mutating이라는 키워드를 사용합니다.
+
+* mutating
+특정 메소드 내에서 구조체 또는 열거형의 프로퍼티를 수정해야 하는 경우, 해당 메소드의 동작을 변경하도록 하는 것
