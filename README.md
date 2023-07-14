@@ -15,3 +15,12 @@ APP4 : EggTimer🥚
 
 APP5 : Question🙋🏻‍♀️
 ![Simulator Screen Shot - iPhone 14 Pro - 2023-03-25 at 19 00 57](https://user-images.githubusercontent.com/42735333/227710493-d355b2b6-7742-495d-b0bc-5cd8802721d8.png)
+
+
+
+APP6 : BMI🐽
+
+
+<img width="330" alt="스크린샷 2023-06-09 오후 4 41 11" src="https://github.com/kimgyuhee/Swift/assets/42735333/0a6e778f-eca6-478b-8612-76ccf143dd69">
+<img width="315" alt="스크린샷 2023-06-09 오후 4 40 53" src="https://github.com/kimgyuhee/Swift/assets/42735333/babceccd-ea21-4457-b287-6926df00d022">
+
