@@ -1,0 +1,60 @@
+
+Sender : 액션 핸들러에 대한 책임이 있는 객체
+// 1. 일반적 함수
+func normalFunc(name: String) {
+}
+// 함수호출
+normalFunc(name: "나리")
+// 함수이름: normalFunc(name:)
+
+// 2. 전달인자 레이블을 사용한 함수
+func usingArgumentLabelFunc(to name: String) {
+}
+// 함수호출
+usingArgumentLabelFunc(to: "나리")
+// 함수이름: usingArgumentLabelFunc(to:)
+
+
+// 3. 전달인자 레이블을 와일드카드 식별자로 사용하는 함수 - 함수호출 시 자바에서처럼 호출
+func usingWildCardLabelFunc(_ name: String) {
+}
+// 함수호출
+usingWildCardLabelFunc("나리")
+
+
+
+UITextField : 인터페이스 안에서 편집 가능한 텍스트 영역을 표시하는 객체, 여러 줄을 사용할 수 없고 한 줄로만 작성가능합니다.
+
+Q. textField에 타이핑 후 검색 버튼이나 키보드의 return 키를 누르면
+키보드가 알아서 내려가게 하려면 어떻게 해야 할까?
+A. searchTextField.endEditing(true) 를 작성해주면 된다.
+검색 버튼을 누르거나 키보드의 return 키를 눌렀을 경우에
+텍스트 필드에게 작성이 완료되었다는 것을 알려주는 것
+
+
+UILabel : 읽기 전용의 텍스트를 제공하는 객체입니다. 사용자가 키보드를 통해 편집할 수 없습니다. 기본 설정은 1줄로 표기되지만 아래 이미지 처럼 Lines 속성을 선택하면 여러줄로도 사용할 수 있습니다.
+
+
+UITextView :  텍스트를 여러줄로 사용하고, 편집하기 위한 객체입니다.  UITextView를 터치하면 키보드가 등장하며, 편집할 수 있습니다. Attribute inspector의 Behavior 속성에서 Editable 체크를 해제하면 편집을 불가능하게 할 수 있습니다. 
+
+
+
+
+* SwiftUI
+모든 Apple 플랫폼에서 사용자 인터페이스를 만들 수 있게 해준다.
+한번의 개발로 모든 애플 기기의 사용자 인터페이스를 만들 수 있게 해준다.
+=> 내가 사용하는 방식, Storyboard
+- SwiftUI의 많은 것들이 UIKit 위에서 작동
+
+1) 애플에서 2019년 6월에 있었던 WWDC 2019에서 발표한 
+2) 선언형은 내가 무엇을 원하는지 UI구성을 전달하면 SwiftUI 프레임워크가 알아서 처리
+
+*  SwiftUI 4가지 원칙
+1) 선언형
+2) 자동화
+3) 조합 : 큰 뷰를 하나의 기능을 가진 작은 뷰들로 자르거나 각각의 뷰를 조합해서 원하는 뷰를 쉽게 만들 수 있도록 지원
+4) 데이터 업데이트, 최신화
+	: SwiftUI는 데이터가 변경되면 즉시 UI도 자동으로 갱신을 해줬습니다. 
+	그냥 되는 건 아니고 뷰의 특정한 상태를 저장할 State난 
+	모델 객체의 변화를 관찰하는 ObservableObject 같은 데이터의 변화를 반영해 뷰에 반영을 해줍니다.
+
