@@ -26,11 +26,4 @@ APP6 : BMI🐽
 
 APP7 : TIPSY💰
 
-![Simulator Screen Shot - iPhone 14 Pro - 2023-07-17 at 11 55 46](https://github.com/kimgyuhee/Swift/assets/42735333/e4de7ba2-343d-41f7-b0e9-d3194e9d47c0)
-![Simulator Screen Shot - iPhone 14 Pro - 2023-07-17 at 11 56 05](https://github.com/kimgyuhee/Swift/assets/42735333/203b476c-5346-4d5c-9a81-484740f745af)
-
-
-
-
-
-
+https://github.com/kimgyuhee/Swift/blob/main/Tipsy/viedo.mp4
