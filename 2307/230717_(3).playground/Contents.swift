@@ -96,3 +96,12 @@ print("곱셈 : ", calculated)
 
 calculated = calculate(a: 50, b: 10, method: div)
 print("나눗셈 : ",calculated)
+
+
+func calculateLevelUp(a : Int, b: Int, method: (Int, Int) -> Int) -> Int {
+    return method(a, b)
+}
+
+
+var result : Int = calculateLevelUp(a: 10, b: 10) { $0*3+$1 }
+print(result)
