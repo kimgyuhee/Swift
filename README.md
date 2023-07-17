@@ -24,3 +24,13 @@ APP6 : BMI🐽
 <img width="330" alt="스크린샷 2023-06-09 오후 4 41 11" src="https://github.com/kimgyuhee/Swift/assets/42735333/0a6e778f-eca6-478b-8612-76ccf143dd69">
 <img width="315" alt="스크린샷 2023-06-09 오후 4 40 53" src="https://github.com/kimgyuhee/Swift/assets/42735333/babceccd-ea21-4457-b287-6926df00d022">
 
+APP7 : TIPSY💰
+
+![Simulator Screen Shot - iPhone 14 Pro - 2023-07-17 at 11 55 46](https://github.com/kimgyuhee/Swift/assets/42735333/e4de7ba2-343d-41f7-b0e9-d3194e9d47c0)
+![Simulator Screen Shot - iPhone 14 Pro - 2023-07-17 at 11 56 05](https://github.com/kimgyuhee/Swift/assets/42735333/203b476c-5346-4d5c-9a81-484740f745af)
+
+
+
+
+
+
