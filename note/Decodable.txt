@@ -1,0 +1,36 @@
+
+# 디코딩 방법
+Decode 메서드는 두개의 파라미터가 필요합니다.
+첫번째 파라미터는 디코딩할 타입을 정의한다.
+반드시 Decodable이나 Coddle 프로토콜을 채택해야됩니다.
+
+struck Person : Coddle {
+	var name : String
+	var age : Int
+	var birthDate : String
+}
+
+
+두번째 차라미터에는 json이 저장되어 있는 data를 전달합니다.
+
+let jsonData = 
+"""
+{
+"name" : "gyuhee",
+"age" : 26,
+"birthDate" : "1998-04-13"
+}
+""".data(using : .utf8)!
+
+결과적으로 decode 방법
+let decoder = JSONDecoder()
+
+do {
+	let result = try decoder.decode(Person.self, from : jsonData)
+	print(result)
+} catch {
+	print(error)
+}
+
+- do-catch 문은 오류를 처리하는 가장 간단한 방법
+- 인코딩(encoding)은 code화 한다는 뜻이다. 무언가를 코드로 바꾼다는 뜻이다. 반대로 디코딩(decoding)은 코드에서 원래 모습으로 되돌리는 것이다.
