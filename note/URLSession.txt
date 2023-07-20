@@ -1,0 +1,198 @@
+
+### URLSession ###
+- 앱과 서버 간의 데이터를 주고받기 위해서는 HTTP 프로토콜을 이용해서 데이터를 주고받음
+- 앱에서 서버와 통신하기 위해 애플이 제공하는 API
+- HTTP를 포함한 몇 가지 프로토콜을 지원하고 인증, 쿠키 관리, 캐시 관리 등을 지원
+- iOS 앱에서 네트워킹을 하기 위해 필요한 API
+* 기본적으로 request, response 구조를 가지고 있습니다.
+
+
+### URLSession 사용 순서 ###
+1. Configuration을 결정
+2. Session 생성
+3. Request에 사용할 url 설정
+4.Task 결정 및 작성
+
+
+
+### URLSessionConfiguration ###
+URLSession을 생성하기 위해서 필요한 요소
+Configuration을 생성할 때는 URLSession 정책에 따라서 default, ephemeral, background 세 가지 형태로 생성
+
+Default : 기본 통신으로 디스크 기반 캐싱을 지원합니다.
+Ephemeral : 쿠키나 캐시를 저장하지 않는 정책을 가져갈 때 사용합니다. (ex. Safari의 개인정보보호 모드)
+Background : 앱이 백그라운드에 있는 상황에서 컨텐츠 다운로드, 업로드를 할 때 사용합니다.
+앱이 종료돼도 통신이 이뤄지는 것을 지원하는 세션
+
+
+### URLSession Delegate ###
+네트워크 중간 과정을 확인할 수 있습니다. 필요에 따라서 사용됩니다.
+
+
+### URLSession Task ###
+작업에 따라서 3가지로 나뉩니다.
+
+
+### DataTask ###
+- Data를 받는 작업, Response 데이터를 메모리 상에서 처리하게 됩니다.
+- 백그라운드 세션에 대한 지원이 되지 않습니다.
+- URL 요청을 실시하고 완료 시 핸들러를 호출하는 Task 형식
+- Task가 실행된 후 핸들러가 실행되기 때문에 탈출 Closure 형태로 받아와야 합니다.
+
+
+### UploadTask ###
+파일을 업로드할 때 사용합니다.
+
+
+### DownloadTask ###
+파일을 다운로드 받아서 디스크에 쓸 때 사용합니다.
+
+
+
+### Configuration 결정 및 Session 생성 ###
+Configuration은 기본 통신인 Default 설정값을 이용하였고 이를 통해서 Session을 생성할 수 있습니다.
+
+let config = URLSessionConfiguration.default
+let session = URLSession(configuration: config)
+
+
+
+
+### Task 작성 ###
+URL을 이용해서 request 했을 때 응답(response) 값을 받아오기 때문에 DataTask를 이용합니다.
+실제 네트워킹할 url(requestURL)을 인자로 받고 네트워킹 요청을 하고 나서 완료가 되면 
+수행 작업은 Completion Handler에서 작업을 진행합니다.
+
+let dataTask = session.dataTask(with: requestURL) { data, response, error in
+    let successRange = 200..<300
+    guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+        return
+    }
+    
+    guard let resultData = data else {
+        return
+    }
+    
+    
+    do {
+        let decoder = JSONDecoder()
+        let response = try decoder.decode(Response.self, from: resultData)
+        let tracks = response.tracks
+        print(tracks.count)
+        for track in tracks {
+            print("title: \(track.title)")
+            print("artistName: \(track.artistName)")
+            print("")
+        }
+    } catch let error {
+        print("--> error: \(error.localizedDescription)")
+    }
+}
+
+dataTask.resume()
+ 
+
+### Closure 부분 ###
+Completion Handler : 네트워크를 통해서 데이터를 받아오면 데이터로 하는 행동을 Closure가 수행합니다.
+{ data, response, error in
+    let successRange = 200..<300
+    guard error == nil, let statusCode = (response as? HTTPURLResponse)?.statusCode, successRange.contains(statusCode) else {
+        return
+    }
+    
+    guard let resultData = data else {
+        return
+    }
+    
+    
+    do {
+        let decoder = JSONDecoder()
+        let response = try decoder.decode(Response.self, from: resultData)
+        let tracks = response.tracks
+        print(tracks.count)
+        for track in tracks {
+            print("title: \(track.title)")
+            print("artistName: \(track.artistName)")
+            print("")
+        }
+    } catch let error {
+        print("--> error: \(error.localizedDescription)")
+    }
+}
+resultData를 print()해보면 몇 byte가 들어왔는지만 나오고 실제로 원하는 데이터가 나오지 않습니다.
+
+간단하게 확인해보기 위해서 encoding을 .utf8로 진행해도 되지만, 많은 곳에서 네트워킹 이후의 JSON 형식의 데이터를 받아와서 가공하고 사용합니다.
+그래서 Closure 부분에는 Data를 원하는 형식으로 가공하는 코드가 do {} 코드 부분에 작성되어 있습니다.
+우리가 원하는 정보를 JSON 형식으로 받아오기 위해서 받는 그릇(오브젝트)이 필요합니다.
+위의 Closure 코드 부분에서는 Response와 tracks를 받기 위한 그릇이 더 필요합니다. 
+
+우리는 그 그릇을 오브젝트로 생성할 것입니다.
+
+
+
+### Object 생성 ###
+
+struct Response: Codable {
+    let resultCount: Int
+    let tracks: [Track]
+    
+    enum CodingKeys: String, CodingKey {
+        case resultCount
+        case tracks = "results"
+    }
+}
+
+struct Track: Codable {
+    let title: String
+    let artistName: String
+    let thumbnailPath: String
+    
+    enum CodingKeys: String, CodingKey {
+        case title = "trackName"
+        case artistName
+        case thumbnailPath = "artworkUrl30"
+    }
+}
+
+Codable : JSON 데이터를 원하는 오브젝트로 파싱 할 때 유용하게 사용하는 프로토콜
+CodingKey : 임의로 입력한 변숫값과 받아온 데이터의 키 값을 맞춰주는 기능을 합니다.
+
+
+request에 대한 응답으로 받아온 JSON 데이터는 Key, Value의 형식으로 되어 있습니다. 해당 Value에 접근하기 위해서는 해당 Key의 값을 알아야 합니다. 단순히 '가수 이름은 artistName이겠지?'라는 생각으로 변수명을 작성한다면 받아온 JSON 데이터와 매칭 할 수 없습니다.
+그래서 CodingKey를 이용합니다. CodingKey는 JSON 데이터 안에 이미 정해진 변수명을 사용하는 것이 아니라 내가 원하는 변수명을 사용할 수 있도록 도와주는 기능을 합니다.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+UIKit, 네트워크 통신같은 비동기 처리가 필요할 때 꼭 알아야 하는 CompletionHandler 다루기!
+### 동기 (Synchronous)와 비동기(Asynchronous) ###
+동기 방식은 서버에서 요청을 보냈을 때 응답이 돌아와야 다음 동작을 수행할 수 있다. 즉 A작업이 모두 진행 될때까지 B작업은 대기해야한다.
+비동기 방식은 반대로 요청을 보냈을 때 응답 상태와 상관없이 다음 동작을 수행 할 수 있다. 즉 A작업이 시작하면 동시에 B작업이 실행된다. A작업은 결과값이 나오는대로 출력된다.
+
+
+안드로이드는 multi-threading 을 지원한다. 즉 하나의 애플리케이션은 동시에 여러가지 작업을 할 수 있다. 안드로이드는 자바의 multi-threading 을 그대로 지원한다.
+개발자들은 하나의 애플리케이션 안에 동시에 실행되는 여러 Thread를 만들 수 있으며, 이 Thread 들은 자바 Virtual Machine 에 의해 동시에 실행된다.
+
+
+### Handler 란 무엇인가? ###
+핸들러란, worker thread 에서 main thread 로 메시지를 전달해주는 역할을 하는 클래스이다.
+
+
+### Handler 를 왜 사용할까? ###
+핸들러는 UI 작업을 main thread 가 아닌, worker thread 에서 하기 위해 사용한다고 볼 수 있다. 엄밀히 말하자면, 꼭 UI 가 아니더라도 하나의 thread 에서 다른 thread 에게 데이터를 전달해주는 역할을 해주는 것이 바로 handler 이다
+
+
+네트워크 요청 작업이 있고 비동기적으로 이를 처리하고 이 처리가 끝난 후 동작하는 것을 Completion Handler에 명령하는 것입니다.
+아마 iOS 개발을 하면서 네트워크 통신을 해보신 분이면 Completion이라는 변수를 많이 보았죠⁉️
+바로 이곳에 여러분들이 원하는 동작을 하는 클로저를 선언해주시면 됩니다.

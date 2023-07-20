@@ -1,0 +1,12 @@
+
+Swift에서 Protocols의 의미
+- 이력서나 이력서에 있는 인증서
+ 
+# define the Protocol
+protocol Myprotocol {
+	// Define requirement
+}
+
+# adopt the Protocol 
+
+
