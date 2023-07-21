@@ -28,6 +28,7 @@ APP6 : BMI🐽
 APP7 : TIPSY💰
 
 https://github.com/kimgyuhee/Swift/blob/main/Tipsy/viedo.mp4
+https://github.com/kimgyuhee/Swift/assets/42735333/757be589-15fe-4621-b337-7528dee15c23
 
 
 APP8 : Clima🌤️
