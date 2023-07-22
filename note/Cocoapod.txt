@@ -1,0 +1,11 @@
+
+
+Cocoapod 적용하기
+
+/var/folders/gg/y9yn2n_x0rn4qg3nd8jlnn000000gn/T/TemporaryItems/NSIRD_screencaptureui_A5Rvgn/스크린샷 2023-07-22 오후 6.07.23.png
+
+/var/folders/gg/y9yn2n_x0rn4qg3nd8jlnn000000gn/T/TemporaryItems/NSIRD_screencaptureui_LdPpq1/스크린샷 2023-07-22 오후 6.07.37.png
+
+* Do you want to continue upgrading to the latest recommended settings and performing project cleanup? It may not be possible to undo this operation.
+=> Continue
+

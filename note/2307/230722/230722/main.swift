@@ -62,15 +62,20 @@ print(range ~= 5)
 print("WHILE LOOPS")
 
 var now = Date().timeIntervalSince1970
-print("now : ",now)
-let oneSecondFromNow = now + 1
-print("oneSecondFromNow", oneSecondFromNow)
+//print("now : ",now)
+//let oneSecondFromNow = now + 1
+//print("oneSecondFromNow", oneSecondFromNow)
+//while now < oneSecondFromNow {
+//    now = Date().timeIntervalSince1970
+//   print("\\"(now) : waiting")
+//}
+print(
 """
-while now < oneSecondFromNow {
-    now = Date().timeIntervalSince1970
-    print("\(now) : waiting")
-}
+"gimgyuhuiui-MacBookPro:~ gyuhee$ swift --version
+Apple Swift version 5.7.2 (swiftlang-5.7.2.135.5 clang-1400.0.29.51)
+Target: arm64-apple-darwin22.3.0
 """
+)
 
 extension Date {
     var toString: String {
