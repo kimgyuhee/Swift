@@ -1,0 +1,31 @@
+
+ViewController Lifecycle
+
+
+1. 가장 먼저 일어나는 일은 뷰가 로드 되는 것입니다.
+	- viewDidLoad()
+	- 모든 IBOutlet, IBAction 뷰와 관연된 모든 개체가 연결되어 접근 가능
+	- viewDidLoad() 메서드는 한번만 호출된다.
+
+2. 뷰가 로드된 후에 운영체제가 viewWillAppear()를 호출
+	- viewWillAppear()
+	- 뷰가 화면에 나타나기 직전에 호출
+	- 사용자가 아직 아무것도 볼 수 없다.
+	- 특정 UI 구성 요소를 숨기거나 보여주기 좋은 시점
+
+3. viewDidAppear()로 다음 단계가 호출됐을 때만 화면에서 볼 수 있다.
+	- 이 시점에서 메서드로 탭하면 뷰가 이미 화면에 나타납니다.
+	- 카운트 타이머를 시작하기 좋은 시점
+
+4. viewWillDisappear()
+	- 뒤로 이동하거나 현재의 ViewController를 어떻게든 해지하면 
+	이게 첫번째 메서드가 되는 것이다. 이 이벤트를 준비하기 위한 코드를 작성할 수 있도록
+
+5. viewDidDisappear()
+	- 사용자가 볼 수 없다.
+
+	
+
+
+
+	
