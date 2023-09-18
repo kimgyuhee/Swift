@@ -1,0 +1,92 @@
+SwiftUI에서 스택은 3가지 종류가 있습니다.
+3가지 종류는 VStack, Stack, Stack
+
+* VStack
+
+Generic Structure
+VStack
+A view that arranges its children in a vertical line
+-> VStack은 Generic Structure이며, 자식들을 수직으로 배열하는 뷰입니다.
+
+Ex)
+Struct ContentView : View {
+	var body : some View {
+		VStack {
+			Text("Hello, World1")
+			Text("Hello, World2")
+		}
+	}
+}
+
+Struct ContentView_Previews : PreviewProvider {
+	static var previews : some View {
+		ContentView()
+	}
+}
+
+Result)
+"Hello, World1"
+"Hello, World2"
+
+
+
+* HStack
+
+Generic Structure
+HStack
+A view that arranges its children in a horizontal line
+-> HStack은 Generic Structure이며, 자식들을 수평으로 배열하는 뷰입니다.
+
+
+Ex)
+Struct ContentView : View {
+	var body : some View {
+		HStack {
+			Text("Hello, World1")
+			Text("Hello, World2")
+		}
+	}
+}
+
+Struct ContentView_Previews : PreviewProvider {
+	static var previews : some View {
+		ContentView()
+	}
+}
+
+Result)
+"Hello, World1" "Hello, World2"
+
+
+
+
+* ZStack
+
+Generic Structure
+ZStack
+A view that arranges its children, aligning them in both axes.
+-> HStack은 Generic Structure이며, 자식들을 오버레이하고 두 축으로 배열하는 뷰입니다.
+
+
+Ex)
+Struct ContentView : View {
+	var body : some View {
+		ZStack {
+			Text("Hello, World1")
+			Text("Hello, World2")
+		}
+		Text("스택스택스택스택스택스택스택스택스택")
+	}
+}
+
+Struct ContentView_Previews : PreviewProvider {
+	static var previews : some View {
+		ContentView()
+	}
+}
+
+Result)
+"Hello, World1" "Hello, World2" 위에 "스택스택스택스택스택스택스택스택스택"가 겹쳐서 보임
+
+
+
