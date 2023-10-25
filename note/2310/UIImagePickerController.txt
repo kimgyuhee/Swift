@@ -1,0 +1,147 @@
+[Swift/iOS] 카메라로 사진 찍기 및 앨범에서 이미지 가져오기 (taking a picture using the camera)
+
+#### 목차 ####
+1. sourceType
+2. allowEditing
+3. cameraDevice
+4. cameraCaptureMode
+5. cameraFlashMode
+6. delegate 위임하기
+7. Error 해결하기
+
+
+UIImagePickerController가 뭘까요? 
+Apple🍎의 공식 문서를 확인해보면
+
+UIImagePickerController
+-> A view controller that manages the system intefaces for taking pictures, recording movies, and choosing items from user' media library.
+
+"사진 촬영, 동영상 녹화, 사용자의 미디어 라이브러리에서
+항목을 선택하기 위한 시스템 인터페이스를 관리하는 View Controller입니다."
+이번 시간에는 UIImagePickerController에서 제공해주는 다양한 함수에 대해 살펴볼게요!
+그럼 기본적인 코드를 보고 설명을 해볼까요?
+
+
+1. sourceType
+( 생략 가능, default값 photoLibrary )
+sourceType은 인터페이스 타입을 선택할 수 있는 함수입니다
+camera(카메라), photoLibrary(사진앨범), savePhotosAlbum(특별한 순간)
+중 선택하면 됩니다!
+
+
+2. allowEditing
+( 생략 가능, default값 false )
+사진을 촬영한 후 편집을 가능하게 할 것인지에 대한 Bool value입니다
+true와 false의 차이는 allowEditing을 허락하니 사진을 찍고 난 후 확인하는 뷰에서
+네모 박스가 생긴 게 보이시나요?
+비율을 1:1로 수정해주는 역할을 해줍니다 !
+정방향 사진찍기 기능이네요~ ✨
+
+
+3. cameraDevice
+( 생략 가능, default값 rear)
+카메라가 띄어질 때 후면, 전면 카메라를 설정할 수 있는 함수입니다.
+front(전면), rear(후면)을 선택할 수 있습니다.
+이것은 처음 카메라가 띄어질 때의 값인 것일 뿐,
+카메라가 띄어진 후 사용자가 후, 전면 카메라를 모두 번갈아가며 이용할 수 있습니다!
+
+
+4. cameraCaptureMode
+( 생략 가능, default값 Photo )
+카메라와 비디오를 선택할 수 있는 함수입니다.
+비디오로 바꾸고 싶다면 사용해주면 됩니다 ~!
+
+
+5. cameraFlashMode
+(생략 가능, default값 Auto )
+카메라가 띄어질 때 카메라 플래시 모드를 설정할 수 있는 함수입니다.
+auto, on, off로 설정할 수 있습니다.
+이 또한, 카메라를 띄운 다음에도 사용자가 설정할 수 있는 값이기 때문에
+사용자가 플래시를 무조건 써야 하게 할 때만 설정하면 될꺼같습니다 'ㅅ'
+
+
+6. delegate 위임하기
+생략하면 안 되는 가장 중요한 것! delegate 위임하기입니다!
+이 기능을 사용하기 위해서는
+UIImagePickerControllerDelegate, UINavigationControllerDelegate
+이렇게 두 개의 delegate를 위임해서 사용해야 합니다!
+사진을 찍은 후에 다시 찍기(Retake)와 사진 사용하기(Use Photo) 버튼에서 사용됩니다.
+그래서 이 위임받은 delegate에서는 두 개의 함수를 구현해주겠습니다 ~
+
+첫 번째는, didFinishPickingMediaWithInfo
+사진을 찍은 후 User Photo를 눌렀을 때 발생되는 함수입니다 🌟
+
+ func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let image = info[UIImagePickerController.InfoKey(rawValue: "UIImagePickerControllerEditedImage")] as? UIImage {
+            myImageView.image = image
+        }
+
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+코드를 보면 image를 가져와서 ImageView에 넣어준 후,
+카메라 뷰 picker를 dismiss 해 함수를 구현해줬습니다 ~
+두 번째는, imagePickerControllerDidCancel
+사진을 찍는 화면에서 cancel를 눌렀을 때 발생하는 함수입니다🌟
+
+func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+
+
+이번에는 단순히 카메라 뷰 picker를 dismiss 해서
+화면을 빠져나오게 구현해줬습니다 ~
+
+
+7. Error 해결하기
+💧 자 이제, 모든 준비를 마치고!
+실행을 해볼까요~~~?
+하지만, 실행을 하고 버튼을 누른 순간
+Terminating app due to uncaught exception 'NSInvalidArgumentException', reason: 'Source type 1 not available'
+
+라는 에러가 나오지 않았나요...!?!?
+그 이유는 camera는 시뮬레이터로 테스트할 수 없기 때문입니다!
+꼭 실제 아이폰을 연결해서 테스트 진행해주세요!
+💧 그럼 이제 폰을 연결하고 실행을 하고 버튼을 누르면~~?
+
+[access] This app has crashed because it attempted to access privacy-sensitive data without a usage description.  The app's Info.plist must contain an NSCameraUsageDescription key with a string value explaining to the user how the app uses this data.
+
+라는 에러가 나오지 않나요..!??!
+또 무슨 에러일까🥲 보니깐 
+사용자의 privacy-sensitive한 데이터에 접근하기 위해서는
+info.plist를 통해 접근 권한을 허락해야 한다는 에러 메시지였습니다!
+
+우리는 앱이 카메라를 이용한다는 허락을 사용자에게 받아야 합니다!
+info.plist에 들어가서
+Privacy - Camera Usage Description 를 추가해주세요!
+그리고 저 value 값은 사용자에게 전달하고 싶은 message를 적어주시면 됩니다
+그러면 앱을 처음 실행해 카메라 기능을 수행할 때
+
+이렇게 접근을 허용할 수 있게 해주는 alert이 뜨게 되고,
+사용자가 확인 버튼을 눌러주면
+카메라 기능을 사용할 수 있게 됩니다🤗
+
+
+
+[iOS] imagePickerController 인스턴스 메소드 내 UIImagePickerControllerEditedImage 에러 해결
+
+swift 버전 4.0
+// 이미지 선택을 완료했을 때 호출되는 메소드
+func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    picker.dismiss(animated: true)
+    if let uiImage = info[UIImagePickerControllerEditedImage] as? UIImage {
+    	print("pick")
+    }
+  }
+
+swift 버전 4.2 이후
+func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let editedImage = info[.editedImage] as? UIImage{
+            print("pick")
+            picker.dismiss(animated: true)
+        }
+    }
+
+
+
