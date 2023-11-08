@@ -1,0 +1,13 @@
+ARKit
+
+
+개발한 APP 아이폰에 연동하기
+
+***** 개발자 모드(Developer Mode) 설정하기 *****
+
+https://velog.io/@0923alswl/%EA%B0%9C%EB%B0%9C%EC%9E%90-%EB%AA%A8%EB%93%9CDeveloper-Mode-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0
+
+***** 오류 사항 해결 방법 *****
+
+CASE1. 아이폰에 신뢰하지 않는 개발자 창이 뜨는 경우
+https://plcprogrammer-dy.tistory.com/22

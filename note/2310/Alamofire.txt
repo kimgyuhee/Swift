@@ -1,0 +1,195 @@
+[iOS] - Alamofire 사용하여 HTTP request
+
+
+##### Alamofire란? #####
+Swift 기반 HTTP 네트워킹 라이브러리
+
+URLSession에 기반한 라이브러리로
+네트워킹 작업을 단순화하고
+네트워킹을 위한 다양한 메서드와 json파싱 등을 제공합니다.
+
+URLSession을 사용해도되지만, Alamofire를 사용하면 코드가 더 간단해지고 여러 기능을 직접 구축하지 않아도 되기 때문에 자주 사용되고 있습니다.
+
+
+
+##### Alamofire 주요 특징 #####
+1. 연결 가능한 request, response 메서드 제공
+2. URL, JSON 형태의 파라미터 encoding 지원
+3. 파일 업로드 기능 제공
+4. HTTP response 검증, 단위테스트, 통합테스트 보장
+
+
+
+
+1. Alamofire 사용해보기
+굿바이 코로나 API를 사용하여 시도별 발생 동향 데이터를 받아와보겠습니다.
+전달받은 데이터는 CityCovidOverview 객체로 변환합니다.
+데이터 객체의 생성은 URLSession으로 데이터를 전달받을 때와 같기때문에 생략하였습니다
+
+-1) pod file에 추가하기
+pod 'Alamofire', '~> 5.5'
+
+-2) import Alamofire
+Alamofire를 사용할 viewcontroller에
+
+import Alamofire
+import UIKit
+
+Alamofire를 Import 합니다.
+
+
+
+
+2. Alamofire request 메서드 작성하기
+
+1) 매개변수 지정하여 fetchCovidOvervie메서드 정의하기
+func fetchCovidOverview(
+	completionHandler: (Result<CityCovidOverview, Error> -> Void
+) {
+}
+
+API요청하여 서버에서 JSON 데이터를 받거나 요청에 실패하여 데이터를 받지 못하는 경우
+CompletionHandler 클로져를 호출하여 해당 클로져에 응답받은 데이터를 전달하도록 합니다.
+
+
+2) API 주소 url과 key 작성하기
+
+굿바이코로나 API 문서에 다음과 같이 작성되어 있습니다.
+func fetchCovidOverview(
+	completionHandler: (Result<CityCovidOverview, Error> -> Void
+) {
+	let url = "https://api.corona-19.kr/korea/country/new/"
+    let param = [
+        "serviceKey": "개인 API KEY"
+    ]
+}
+
+
+3) Alamofire request 작성하기
+
+AF.request(url, method: .get, parameters: param)
+
+- 지금은 데이터를 받아올 것이기 때문에 method에 .get을 작성합니다
+- 다른 매개변수들은 지금 필요없기 때문에 작성하지 않아도 됩니다
+
+
+4) response 메서드 chaining
+AF.request(url, method: .get, parameters: param)
+  .responseData(completionHandler: { response in
+      
+  })
+요청에 대한 응답 데이터를 처리해주는 responseData 메서드를 chaining으로 작성합니다.
+completionHandler클로져를 정의하면 응답 데이터가 completionHandler의 매개변수 response로 들어갑니다.
+
+
+5) responseData - success
+AF.request(url, method: .get, parameters: param)
+  .responseData(completionHandler: { response in
+      switch response.result {
+      case let .success(data):
+          do {
+              let decoder = JSONDecoder()
+              let result = try decoder.decode(CityCovidOverview.self, from: data)
+                    completionHandler(.success(result))
+          } catch {
+              completionHander(.failure(error))
+          }
+      }
+  })
+esponse.result 로 응답의 결과를 알 수 있고 switch문을 사용해서 결과에 따른 클로져를 작성합니다.
+응답이 성공(success)이면 서버에서 받은 데이터가 data로 전달됩니다.
+do catch 문 안에서 JSONDecoder를 사용하여 전달받은 데이터를 CityCovidOverview로 변환합니다.
+fetchCovidOverview의 completionHandler를 호출하여 .success의 연관값 result를 전달합니다.
+JSONData를 decode하는데에 실패하는 경우 catch구문이 실행될 것이기 때문에 catch안에 completionHandler를 호출하여 .failure 열거형과 연관값 error를 전달합니다.
+
+6) responseData - failure
+switch response.result {
+      case let .success(data):
+          do {
+              let decoder = JSONDecoder()
+              let result = try decoder.decode(CityCovidOverview.self, from: data)
+                    completionHandler(.success(result))
+          } catch {
+              completionHander(.failure(error))
+          }
+      case let .failure(error):
+          completionHandler(.failure(error))
+      }
+요청에 실패하는 경우 completionHandler를 호출하여 .failure 열거형과 연관값 error를 전달합니다.
+
+
+7) @escaping
+클로져가 함수 실행 중에 즉시 실행되지 않고 함수가 종료된 후에 비동기적으로 실행될 때 클로져 앞에 @escaping을 붙여 escaping 클로져라고 명시해주어야합니다
+
+여태까지 작성한 fetchCovidOverview메서드는 아래와 같습니다.
+
+ func fetchCovidOverview(
+        completionHandler:(Result<CityCovidOverview, Error>) -> Void
+    ) {
+       let url = "https://api.corona-19.kr/korea/country/new/"
+       let param = [
+            "serviceKey": "zmgWZa6BOhkuU1XE7tYLRcyqpjeDfbKow"
+        ]
+        
+        AF.request(url, method: .get, parameters: param)
+            .responseData(completionHandler: { response in
+            switch response.result {
+            case let .success(data):
+                do {
+                    let decoder = JSONDecoder()
+                    let result = try decoder.decode(CityCovidOverview.self, from: data)
+                    completionHandler(.success(result))
+                } catch {
+                    completionHandler(.failure(error))
+                }
+                
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+            
+        })
+    }
+    
+
+서버에서 언제 응답데이터를 전달해줄 지 모르기 때문에 responseData의 completionHandler클로져는 fetchCovidOverview함수가 종료된 이후에 호출됩니다.
+
+그렇기에 completionHandler를 @escaping으로 정의해주지 않는다면
+completionHandler가 호출되기 전에 fetchCovidOverview 함수가 종료되어 서버에서 데이터를 받을 수 없습니다.
+
+따라서 completionHandler는 함수가 종료되어도 계속 남아 함수 밖에서도 사용될 수 있도록 @escaping 을 completionHandler 클로져 정의 앞에 작성해주어야합니다.
+
+
+ func fetchCovidOverview(
+        completionHandler: @escaping (Result<CityCovidOverview, Error>) -> Void
+    ) {
+       let url = "https://api.corona-19.kr/korea/country/new/"
+       let param = [
+            "serviceKey": "zmgWZa6BOhkuU1XE7tYLRcyqpjeDfbKow"
+        ]
+        
+        AF.request(url, method: .get, parameters: param)
+            .responseData(completionHandler: { response in
+            switch response.result {
+            case let .success(data):
+                do {
+                    let decoder = JSONDecoder()
+                    let result = try decoder.decode(CityCovidOverview.self, from: data)
+                    completionHandler(.success(result))
+                } catch {
+                    completionHandler(.failure(error))
+                }
+                
+            case let .failure(error):
+                completionHandler(.failure(error))
+            }
+            
+        })
+    }
+    
+
+
+
+
+
+
+
